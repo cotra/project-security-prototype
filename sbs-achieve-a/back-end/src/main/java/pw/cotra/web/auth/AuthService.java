@@ -1,9 +1,12 @@
 package pw.cotra.web.auth;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pw.cotra.core.cstp.Cstp;
-import pw.cotra.dao.SysUserDao;
+import pw.cotra.core.cstp.Result;
+import pw.cotra.po.SysUser;
+import pw.cotra.service.SysUserService;
 import pw.cotra.web.auth.dto.LoginReq;
 import pw.cotra.web.auth.dto.LoginRes;
 
@@ -11,7 +14,9 @@ import pw.cotra.web.auth.dto.LoginRes;
 public class AuthService {
 
     @Autowired
-    SysUserDao sysUserDao;
+    SysUserService sysUserService;
+
+    // 注册
 
     // 账户验证失败
     public static String ACCOUNT_FAIL = "ACCOUNT_FAIL";
@@ -20,20 +25,21 @@ public class AuthService {
 
     // 登录
     public Cstp<LoginRes> login(LoginReq req) {
-//        List<UmsAdmin> list = authDao.getListByName(req.getUsername());
-//        if(list.size() == 0 || list == null) {
+        QueryWrapper<SysUser> wrapper = new QueryWrapper<>();
+        wrapper.eq("username", req.getUsername());
+        SysUser sysUser = sysUserService.getOne(wrapper);
+        System.out.println(sysUser);
+
+        if(sysUser == null) {
+            return Result.fail(ACCOUNT_FAIL);
+        }
+//        if(!authBo.match(req.getKey(), sysUser.getPassword())) {
 //            return Result.fail(ACCOUNT_FAIL);
 //        }
-//        if(list.size() != 1) {
-//            return Result.fail(ACCOUNT_FAIL);
-//        }
-//        UmsAdmin umsAdmin = list.get(0);
 //        if(umsAdmin.getStatus() == 0) {
 //            return Result.fail(ACCOUNT_LOCKED);
 //        }
-//        if(!authBo.match(req.getKey(), umsAdmin.getPassword())) {
-//            return Result.fail(ACCOUNT_FAIL);
-//        }
+
 //        // 验证通过,修改用户登录时间,用该时间生成jwt
 //        Date lastLoginDate = new Date();
 //        int result = authDao.updateLoginTime(umsAdmin.getId(), lastLoginDate);

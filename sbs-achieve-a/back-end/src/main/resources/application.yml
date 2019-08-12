@@ -33,5 +33,7 @@ mybatis:
   type-aliases-package: pw.cotra.po
   configuration:
     map-underscore-to-camel-case: true
-
-
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: AUTO
