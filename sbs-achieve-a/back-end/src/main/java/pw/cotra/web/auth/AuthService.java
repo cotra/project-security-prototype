@@ -1,12 +1,17 @@
 package pw.cotra.web.auth;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pw.cotra.core.cstp.Cstp;
+import pw.cotra.dao.SysUserDao;
 import pw.cotra.web.auth.dto.LoginReq;
 import pw.cotra.web.auth.dto.LoginRes;
 
 @Service
 public class AuthService {
+
+    @Autowired
+    SysUserDao sysUserDao;
 
     // 账户验证失败
     public static String ACCOUNT_FAIL = "ACCOUNT_FAIL";

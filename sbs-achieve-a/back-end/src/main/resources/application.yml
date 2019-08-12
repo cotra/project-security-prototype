@@ -11,6 +11,8 @@ logging:
 #  file: log/run.log
 # Spring
 spring:
+  aop:
+    proxy-target-class: true
   application:
     name: sbs-achieve-a
   jackson:
@@ -28,7 +30,7 @@ spring:
 # MyBatis
 mybatis:
   mapper-locations: classpath:mapper/*Mapper.xml
-  type-aliases-package: com.linya.admin.po
+  type-aliases-package: pw.cotra.po
   configuration:
     map-underscore-to-camel-case: true
 
