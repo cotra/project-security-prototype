@@ -1,5 +1,6 @@
 package pw.cotra.security;
 
+import cn.hutool.Hutool;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -8,6 +9,7 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 import pw.cotra.core.cstp.Cstp;
+import pw.cotra.po.SysUser;
 
 import java.util.Set;
 
@@ -38,7 +40,7 @@ public class ShiroRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principal) {
-        log.info("授权访问验证");
+        log.warn("授权访问验证");
 //        UmsAdminAuth user = (UmsAdminAuth) getAvailablePrincipal(principal);
 //        Cstp<Set<String>> roles = service.getAdminRoles(user.getId());
 //        Cstp<Set<String>> perms = service.getAdminPerms(user.getId());
@@ -60,22 +62,17 @@ public class ShiroRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
+        log.warn("doGetAuthenticationInfo");
         UsernamePasswordToken upToken = (UsernamePasswordToken) token;
         String guestName = upToken.getUsername(); //访客用户名
-        if(guestName == null) {
-            throw new UnknownAccountException(); // 访客名为null
+
+        Cstp<SysUser> cstp = service.getAdmin(guestName); // 根据访客用户名查找用户
+        if(!cstp.isOk()) {
+            throw new UnknownAccountException(); // 账户错误
         }
-//        Cstp<UmsAdminAuth> cstp = service.getAdmin(guestName); // 根据访客用户名查找用户
-//        if(!cstp.isOk()) {
-//            throw new UnknownAccountException(); // 账户错误
-//        }
-//        UmsAdminAuth ControlAdmin = cstp.getData();
-//        if(ControlAdmin.getStatus() == 0) {
-//            throw new LockedAccountException(); // 账户被锁定
-//        }
+        SysUser user = cstp.getData();
 
         // 返回对照用户名和对照MD5
-//        return new SimpleAuthenticationInfo(ControlAdmin, ControlAdmin.getPassword(), getName());
-        return null;
+        return new SimpleAuthenticationInfo(user, user.getPassword(), getName());
     }
 }

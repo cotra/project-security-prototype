@@ -1,10 +1,13 @@
 package pw.cotra.security;
 
+import org.apache.shiro.cache.CacheManager;
+import org.apache.shiro.cache.MemoryConstrainedCacheManager;
 import org.apache.shiro.spring.web.config.DefaultShiroFilterChainDefinition;
 import org.apache.shiro.spring.web.config.ShiroFilterChainDefinition;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import pw.cotra.web.WebApiUrl;
 
 @Configuration
 public class ShiroConfig {
@@ -16,7 +19,7 @@ public class ShiroConfig {
     public ShiroFilterChainDefinition shiroFilterChainDefinition() {
         // 需认证
         DefaultShiroFilterChainDefinition definition = new DefaultShiroFilterChainDefinition();
-//        definition.addPathDefinition(UmsApiUrl.ROLE + "/**", "authc,roles[PRODUCT_MANAGER]");
+        definition.addPathDefinition(WebApiUrl.ROLE + "/**", "authc");
         return definition;
     }
 
@@ -25,11 +28,6 @@ public class ShiroConfig {
     public ShiroRealm shiroRealm() {
         return new ShiroRealm();
     }
-
-//    @Bean
-//    protected CacheManager cacheManager() {
-//        return new MemoryConstrainedCacheManager();
-//    }
 
     // 授权管理器
     @Bean

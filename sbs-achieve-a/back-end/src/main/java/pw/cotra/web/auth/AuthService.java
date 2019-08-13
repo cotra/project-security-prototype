@@ -1,8 +1,15 @@
 package pw.cotra.web.auth;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.LockedAccountException;
+import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pw.cotra.bo.AuthBo;
 import pw.cotra.core.cstp.Cstp;
 import pw.cotra.core.cstp.Result;
 import pw.cotra.po.SysUser;
@@ -16,8 +23,8 @@ public class AuthService {
     @Autowired
     SysUserService sysUserService;
 
-    // 注册
-
+    // 账户已经登录
+    public static String ACCOUNT_ONLINE = "ACCOUNT_ONLINE";
     // 账户验证失败
     public static String ACCOUNT_FAIL = "ACCOUNT_FAIL";
     // 账户被锁定
@@ -25,20 +32,19 @@ public class AuthService {
 
     // 登录
     public Cstp<LoginRes> login(LoginReq req) {
-        QueryWrapper<SysUser> wrapper = new QueryWrapper<>();
-        wrapper.eq("username", req.getUsername());
-        SysUser sysUser = sysUserService.getOne(wrapper);
-        System.out.println(sysUser);
+        Subject subject = SecurityUtils.getSubject();
+        if(subject.isAuthenticated()) {
+            return Result.fail(ACCOUNT_ONLINE);
+        }
 
-        if(sysUser == null) {
+        try {
+            subject.login(new UsernamePasswordToken(req.getUsername(), AuthBo.passwordToMd5Hash(req.getKey())));
+            return Result.ok();
+        } catch (UnknownAccountException e) {
+            return Result.fail(ACCOUNT_FAIL);
+        } catch (IncorrectCredentialsException e) {
             return Result.fail(ACCOUNT_FAIL);
         }
-//        if(!authBo.match(req.getKey(), sysUser.getPassword())) {
-//            return Result.fail(ACCOUNT_FAIL);
-//        }
-//        if(umsAdmin.getStatus() == 0) {
-//            return Result.fail(ACCOUNT_LOCKED);
-//        }
 
 //        // 验证通过,修改用户登录时间,用该时间生成jwt
 //        Date lastLoginDate = new Date();
@@ -55,6 +61,5 @@ public class AuthService {
 //        BeanUtil.copyProperties(admin, res);
 //        res.setToken(jwt);
 //        return Result.ok(res);
-        return null;
     }
 }

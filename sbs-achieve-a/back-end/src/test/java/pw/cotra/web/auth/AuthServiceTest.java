@@ -9,8 +9,6 @@ import pw.cotra.core.cstp.Cstp;
 import pw.cotra.web.auth.dto.LoginReq;
 import pw.cotra.web.auth.dto.LoginRes;
 
-import static org.junit.Assert.*;
-
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class AuthServiceTest {
