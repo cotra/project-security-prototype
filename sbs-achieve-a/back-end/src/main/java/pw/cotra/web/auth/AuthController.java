@@ -28,9 +28,11 @@ public class AuthController {
         } else if(cstp.getReason().equals(authService.ACCOUNT_FAIL)) {
             return Letter.fail("账号或密码错误", null);
         } else if(cstp.getReason().equals(authService.ACCOUNT_LOCKED)) {
-            return Letter.fail("该账号已被锁定,请联系系统管理人员", null);
+            return Letter.fail("该账号已被锁定", null);
         } else {
             return Letter.fail("登录失败", null);
         }
     }
+
+    
 }

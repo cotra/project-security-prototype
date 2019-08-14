@@ -45,21 +45,5 @@ public class AuthService {
         } catch (IncorrectCredentialsException e) {
             return Result.fail(ACCOUNT_FAIL);
         }
-
-//        // 验证通过,修改用户登录时间,用该时间生成jwt
-//        Date lastLoginDate = new Date();
-//        int result = authDao.updateLoginTime(umsAdmin.getId(), lastLoginDate);
-//        if(result != 1) {
-//            return Result.fail(ACCOUNT_FAIL);
-//        }
-//        UmsAdmin admin = umsAdminDao.selectById(umsAdmin.getId());
-//
-//        // 返回认证token
-//        String jwt = jwtTokenBo.generate(umsAdmin.getId(), umsAdmin.getUsername(), lastLoginDate);
-//
-//        LoginRes res = new LoginRes();
-//        BeanUtil.copyProperties(admin, res);
-//        res.setToken(jwt);
-//        return Result.ok(res);
     }
 }

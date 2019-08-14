@@ -62,7 +62,6 @@ public class ShiroRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-        log.warn("doGetAuthenticationInfo");
         UsernamePasswordToken upToken = (UsernamePasswordToken) token;
         String guestName = upToken.getUsername(); //访客用户名
 
@@ -72,7 +71,8 @@ public class ShiroRealm extends AuthorizingRealm {
         }
         SysUser user = cstp.getData();
 
-        // 返回对照用户名和对照MD5
+        // 返回对照用户名和数据库MD5
+        // user在以后可以直接调用
         return new SimpleAuthenticationInfo(user, user.getPassword(), getName());
     }
 }

@@ -1,7 +1,5 @@
 package pw.cotra.security;
 
-import org.apache.shiro.cache.CacheManager;
-import org.apache.shiro.cache.MemoryConstrainedCacheManager;
 import org.apache.shiro.spring.web.config.DefaultShiroFilterChainDefinition;
 import org.apache.shiro.spring.web.config.ShiroFilterChainDefinition;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
