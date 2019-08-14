@@ -23,16 +23,20 @@ public class AuthController {
     @PostMapping("login")
     public Api<LoginRes> login(@RequestBody @Validated LoginReq req) {
         Cstp<LoginRes> cstp = authService.login(req);
-        if(cstp.isOk()) {
+        if (cstp.isOk()) {
             return Letter.ok("登录成功", cstp.getData());
-        } else if(cstp.getReason().equals(authService.ACCOUNT_FAIL)) {
+        } else if (cstp.getReason().equals(authService.ACCOUNT_ONLINE)) {
+            return Letter.fail("用户已经登录", null);
+        } else if (cstp.getReason().equals(authService.ACCOUNT_FAIL)) {
             return Letter.fail("账号或密码错误", null);
-        } else if(cstp.getReason().equals(authService.ACCOUNT_LOCKED)) {
+        } else if (cstp.getReason().equals(authService.ACCOUNT_LOCKED)) {
             return Letter.fail("该账号已被锁定", null);
         } else {
             return Letter.fail("登录失败", null);
         }
     }
 
-    
+    // logout
+
+    // register
 }

@@ -1,6 +1,7 @@
 package pw.cotra.web.role;
 
 import cn.hutool.core.bean.BeanUtil;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;

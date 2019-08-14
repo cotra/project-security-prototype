@@ -73,6 +73,7 @@ public class ShiroRealm extends AuthorizingRealm {
 
         // 返回对照用户名和数据库MD5
         // user在以后可以直接调用
+        // 实际上只比对密码
         return new SimpleAuthenticationInfo(user, user.getPassword(), getName());
     }
 }
