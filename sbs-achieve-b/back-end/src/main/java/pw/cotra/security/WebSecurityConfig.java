@@ -1,37 +1,19 @@
 package pw.cotra.security;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import pw.cotra.security.filter.TokenAuthenticationFilter;
+import pw.cotra.security.password.PasswordSecurityConfigurerAdapter;
 import pw.cotra.security.handler.AppAccessDeniedHandler;
 import pw.cotra.security.point.AppAuthenticationEntryPoint;
-import pw.cotra.security.provider.AppAuthenticationProvider;
-import pw.cotra.security.service.AppUserDetailsService;
+import pw.cotra.web.WebApiUrl;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-
-    public static Logger LOGGER = LoggerFactory.getLogger(WebSecurityConfig.class);
-
-    @Bean
-    AppUserDetailsService appUserDetailsService() {
-        return new AppUserDetailsService();
-    };
-
-    @Bean
-    TokenAuthenticationFilter tokenAuthenticationFilter() {
-        return new TokenAuthenticationFilter();
-    }
 
     @Bean
     AppAccessDeniedHandler appAccessDeniedHandler() {
@@ -43,28 +25,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new AppAuthenticationEntryPoint();
     }
 
-    @Bean
-    AppAuthenticationProvider appAuthenticationProvider() {
-        return new AppAuthenticationProvider();
-    }
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder builder) throws Exception {
-//        builder.authenticationProvider(appAuthenticationProvider());
-    builder.userDetailsService(appUserDetailsService());
-    }
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder builder) throws Exception {
+//        builder.userDetailsService(appUserDetailsService());
+//    }
 
     //请求拦截
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        // 不使用csrf/表单登录
-        HttpSecurity security = http.csrf().disable().formLogin().disable().logout().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().headers().cacheControl().disable().and();
-        // filter
-        HttpSecurity custom = security.addFilterAt(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        // 不使用csrf/默认表单登录/默认basic登录
+        HttpSecurity security = http.apply(new PasswordSecurityConfigurerAdapter()).and().csrf().disable().formLogin().disable().logout().disable().httpBasic().disable();
         // 自定义
-        HttpSecurity role = custom.exceptionHandling().authenticationEntryPoint(appAuthenticationEntryPoint()).accessDeniedHandler(appAccessDeniedHandler()).and();
+        HttpSecurity role = security.exceptionHandling().authenticationEntryPoint(appAuthenticationEntryPoint()).accessDeniedHandler(appAccessDeniedHandler()).and();
         // 规则
-//        role.authorizeRequests().antMatchers(UmsApiUrl.AUTH + "/**").permitAll().antMatchers(UmsApiUrl.ROLE + "/**", PmsApiUrl.BRAND + "/**").authenticated();
+        role.authorizeRequests().antMatchers(WebApiUrl.AUTH + "/**").permitAll().antMatchers(WebApiUrl.ROLE + "/**", WebApiUrl.ROLE + "/**").authenticated();
     }
 
     public void configure(WebSecurity web) throws Exception {

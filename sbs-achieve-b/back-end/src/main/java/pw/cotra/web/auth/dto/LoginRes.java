@@ -2,11 +2,10 @@ package pw.cotra.web.auth.dto;
 
 import lombok.Data;
 
-import java.io.Serializable;
 import java.util.Date;
 
 @Data
-public class LoginRes implements Serializable {
+public class LoginRes {
     private String username;
 
     private String avatar;

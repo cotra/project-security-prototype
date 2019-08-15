@@ -2,6 +2,7 @@ package pw.cotra.security.handler;
 
 import cn.hutool.json.JSON;
 import cn.hutool.json.JSONUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
@@ -14,13 +15,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@Slf4j
 public class AppAccessDeniedHandler implements AccessDeniedHandler {
-
-    public static Logger LOGGER = LoggerFactory.getLogger(AppAccessDeniedHandler.class);
 
     @Override
     public void handle(HttpServletRequest req, HttpServletResponse res, AccessDeniedException e) throws IOException, ServletException {
-        LOGGER.warn("AccessDeniedHandler: " + e.getMessage());
+        log.warn("AccessDeniedHandler: " + e.getMessage());
 
         Api<Object> api = Letter.fail("访问被拒绝", null);
         JSON parse = JSONUtil.parse(api);

@@ -2,6 +2,7 @@ package pw.cotra.security.point;
 
 import cn.hutool.json.JSON;
 import cn.hutool.json.JSONUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.AuthenticationException;
@@ -14,13 +15,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@Slf4j
 public class AppAuthenticationEntryPoint implements AuthenticationEntryPoint {
-
-    public static Logger LOGGER = LoggerFactory.getLogger(AppAuthenticationEntryPoint.class);
 
     @Override
     public void commence(HttpServletRequest req, HttpServletResponse res, AuthenticationException e) throws IOException, ServletException {
-        LOGGER.warn("AuthenticationEntryPoint: " + e.getMessage());
+        log.warn("AuthenticationEntryPoint: " + e.getMessage());
 
         Api<String> fail = Letter.fail("token认证未通过", e.getMessage());
         JSON parse = JSONUtil.parse(fail);
