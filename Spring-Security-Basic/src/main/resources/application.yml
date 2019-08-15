@@ -1,0 +1,36 @@
+# Server
+server:
+  port: 8080
+  server:
+    tomcat:
+      uri-encoding: utf-8
+# logging
+logging:
+  level:
+    root: info
+#  file: log/run.log
+# Spring
+spring:
+  application:
+    name: Spring-Security-Basic
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  datasource:
+    url: jdbc:mysql://localhost:3306/security_basic?useAffectedRows=true&useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&allowMultiQueries=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 123456
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password:
+# MyBatis
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      id-type: auto
+
+
