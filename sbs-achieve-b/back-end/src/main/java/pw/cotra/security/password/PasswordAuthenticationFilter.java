@@ -32,7 +32,6 @@ public class PasswordAuthenticationFilter extends AbstractAuthenticationProcessi
         String body = ServletUtil.getBody(req);
         PasswordReq passwordReq = JSONUtil.parseObj(body).toBean(PasswordReq.class);
         String username = passwordReq.getUsername();
-        log.info(username + "正在进行登录" + req.getSession().getId());
         String password = passwordReq.getPassword();
         if (username == null) {
             username = "";
@@ -42,6 +41,7 @@ public class PasswordAuthenticationFilter extends AbstractAuthenticationProcessi
         }
         username = username.trim();
         password = password.trim();
+        log.info(username + "正在进行登录" + req.getSession().getId());
 
         PasswordAuthenticationToken authRequest = new PasswordAuthenticationToken(username, password);
         this.setDetails(req, authRequest);

@@ -2,11 +2,9 @@ package pw.cotra.web.role;
 
 import cn.hutool.core.bean.BeanUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pw.cotra.core.api.Api;
 import pw.cotra.core.api.Letter;
 import pw.cotra.core.cstp.Cstp;
@@ -22,7 +20,7 @@ public class RoleController {
     @Autowired
     RoleService roleService;
 
-    @GetMapping("list")
+    @PostMapping("list")
     public Api<PageList<SysRole>> list(@RequestBody @Validated RoleListReq req) {
         SysRole role = new SysRole();
         BeanUtil.copyProperties(req, role);

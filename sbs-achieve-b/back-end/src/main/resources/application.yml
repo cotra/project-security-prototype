@@ -11,8 +11,6 @@ logging:
 #  file: log/run.log
 # Spring
 spring:
-  aop:
-    proxy-target-class: true
   application:
     name: sbs-achieve-b
   jackson:
@@ -32,15 +30,8 @@ mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
   mapper-locations: classpath:mapper/*Mapper.xml
-  type-aliases-package: pw.cotra.po
   global-config:
     db-config:
       id-type: auto
-# Shiro
-shiro:
-#  unauthorizedUrl: /api/ums/auth/unauthorized
-  enabled: true
-  sessionManager:
-    sessionIdCookieEnabled: true
-    sessionIdUrlRewritingEnabled: true
+
 

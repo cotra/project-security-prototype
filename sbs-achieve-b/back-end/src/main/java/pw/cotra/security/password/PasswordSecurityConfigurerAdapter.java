@@ -11,9 +11,7 @@ public class PasswordSecurityConfigurerAdapter extends SecurityConfigurerAdapter
     public void configure(HttpSecurity http) throws Exception {
         PasswordAuthenticationFilter passwordAuthenticationFilter = new PasswordAuthenticationFilter();
         passwordAuthenticationFilter.setAuthenticationManager(http.getSharedObject(AuthenticationManager.class));
-
         PasswordAuthenticationProvider passwordAuthenticationProvider = new PasswordAuthenticationProvider();
-
         http.authenticationProvider(passwordAuthenticationProvider)
                 .addFilterAfter(passwordAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }
