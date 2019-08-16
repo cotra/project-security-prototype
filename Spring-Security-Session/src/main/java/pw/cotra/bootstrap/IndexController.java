@@ -1,4 +1,4 @@
-package pw.cotra.web.user;
+package pw.cotra.bootstrap;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -6,11 +6,10 @@ import pw.cotra.core.api.Api;
 import pw.cotra.core.api.Letter;
 
 @RestController
-@RequestMapping("/user")
-public class UserController {
+public class IndexController {
 
-    @RequestMapping("list")
-    public Api<String> list() {
-        return Letter.ok("user list");
+    @RequestMapping("/")
+    public Api<String> index() {
+        return Letter.ok("api service is running.");
     }
 }

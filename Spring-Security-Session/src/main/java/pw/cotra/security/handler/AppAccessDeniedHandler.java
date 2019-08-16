@@ -1,12 +1,12 @@
-package pw.cotra.security.point;
+package pw.cotra.security.handler;
 
 import cn.hutool.json.JSON;
 import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import pw.cotra.core.api.Api;
 import pw.cotra.core.api.Letter;
 
@@ -16,14 +16,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Slf4j
-public class AppAuthenticationEntryPoint implements AuthenticationEntryPoint {
+public class AppAccessDeniedHandler implements AccessDeniedHandler {
 
     @Override
-    public void commence(HttpServletRequest req, HttpServletResponse res, AuthenticationException e) throws IOException, ServletException {
-        log.warn("AuthenticationEntryPoint: " + e.getMessage());
+    public void handle(HttpServletRequest req, HttpServletResponse res, AccessDeniedException e) throws IOException, ServletException {
+        log.warn("AccessDeniedHandler: " + e.getMessage());
 
-        Api<String> fail = Letter.fail("认证未通过", e.getMessage());
-        JSON parse = JSONUtil.parse(fail);
+        Api<Object> api = Letter.fail("访问被拒绝", null);
+        JSON parse = JSONUtil.parse(api);
 
         res.setContentType("application/json");
         res.setCharacterEncoding("UTF-8");
