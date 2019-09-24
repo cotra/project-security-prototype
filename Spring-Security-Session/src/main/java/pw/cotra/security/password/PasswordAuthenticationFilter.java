@@ -1,11 +1,7 @@
 package pw.cotra.security.password;
 
-import cn.hutool.Hutool;
 import cn.hutool.extra.servlet.ServletUtil;
-import cn.hutool.json.JSON;
-import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -42,12 +38,12 @@ public class PasswordAuthenticationFilter extends AbstractAuthenticationProcessi
         password = password.trim();
         log.info(username + "正在进行登录" + req.getSession().getId());
 
-        PasswordAuthenticationToken authRequest = new PasswordAuthenticationToken(username, password);
+        UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken("admin", "123");
         this.setDetails(req, authRequest);
         return this.getAuthenticationManager().authenticate(authRequest);
     }
 
     protected void setDetails(HttpServletRequest request, UsernamePasswordAuthenticationToken authRequest) {
-        authRequest.setDetails(this.authenticationDetailsSource.buildDetails(request));
+        authRequest.setDetails(authenticationDetailsSource.buildDetails(request));
     }
 }

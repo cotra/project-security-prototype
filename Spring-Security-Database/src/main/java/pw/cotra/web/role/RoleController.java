@@ -10,8 +10,8 @@ import pw.cotra.core.api.Letter;
 public class RoleController {
 
     @RequestMapping("list")
-    @PreAuthorize("hasAnyAuthority('ROLE_LOOK', 'LOOK')")
+//    @PreAuthorize("hasAnyAuthority('ROLE_LOOK', 'LOOK')")
     public Api<String> list() {
-        return Letter.ok("role list");
+        return Letter.ok("role list123123");
     }
 }

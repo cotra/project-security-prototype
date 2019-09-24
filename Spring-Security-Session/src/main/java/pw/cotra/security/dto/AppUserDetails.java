@@ -18,6 +18,8 @@ public class AppUserDetails implements UserDetails, Serializable {
     public AppUserDetails(String username, String password) {
         this.password = password;
         this.username = username;
+        List<SysRole> list = new ArrayList<>();
+        this.roles = list;
     }
 
     @Override

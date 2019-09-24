@@ -28,6 +28,16 @@ public class AppUserDetails implements UserDetails, Serializable {
         this.roles.add(role);
     }
 
+    public AppUserDetails(String username, String password, List<SysRole> list) {
+        this.password = password;
+        this.username = username;
+//        role.setId(1L);
+//        AuthorityUtils.commaSeparatedStringToAuthorityList("");
+//        role.setRoleCode("LOOK");
+        this.roles = list;
+//        this.roles.add(role);
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> list = new ArrayList<>();

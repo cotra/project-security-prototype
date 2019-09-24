@@ -3,6 +3,7 @@ package pw.cotra.security.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,15 +24,14 @@ public class AppUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
-        System.out.println(name);
+        System.out.println(name + " loadUserByUsername");
         QueryWrapper<SysUser> wrapper = new QueryWrapper<>();
         wrapper.eq("username", name);
         SysUser sysUser = sysUserService.getOne(wrapper);
-        System.out.println(sysUser.getPassword());
+        System.out.println(sysUser);
         if (sysUser == null) {
-            throw new UsernameNotFoundException("User was not found in db");
+            throw new BadCredentialsException("User was not found in db");
         }
-
 
         AppUserDetails details = new AppUserDetails(sysUser.getUsername(), sysUser.getPassword());
         return details;
